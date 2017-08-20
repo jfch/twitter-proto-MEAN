@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp" ng-controller="myCtrl" ng-init="info">
+  <head>
+    <title>Twitter Lab1</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    
+	<script>
+	var app = angular.module("myApp", []);
+	app.controller("myCtrl", function($scope) {   
+	    $scope.firstName = "John";
+	    $scope.lastName = "Doe";
+	    $scope.info = <%- JSON.stringify(posts) %>; 
+	    $scope.tweet_info="";
+	    //$scope.info = JSON.parse('<%= posts %>');
+	    $scope.get_tweet = function(a){
+	    	alert(a.tweets);
+	    	$scope.tweet_info =a.tweets;
+	    }
+	});
+	</script>
+
+  </head>
+  <body>
+  
+      <div  backgroud = "red">
+      <div class="container">
+        <div class="navbar-header"><a href="#" class="navbar-brand">Twitter Lab1</a></div>
+        <div class="navbar-collapse collapse">  
+        <form action="/logout" method = "get">               
+           <button type="submit" style="margin-left: 5px; float: right; margin-top: 10px;" class="btn btn-success navbar-right"">Logout</button>      
+        </form>
+        </div>
+      </div>
+    </div>
+
+	
+    <div class="jumbotron">
+      <div class="container">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+        <p style="color: red;"> <%=  locals.message %> </p>
+          <form action="/tweet" method = "post">
+            <textarea rows="5" style="float: center; margin-bottom: 5px;" name="tweet_content" class="form-control"></textarea>
+            <button type="submit" style="float: right; margin-top: 8px;" class="btn btn-primary" >Post</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="col-md-6"></div>
+      <div class="col-md-6">      
+      <div>All tweets</div>
+      
+	  <!-- test  -->     
+	  <div >
+		 <div >
+			
+			  <div ng-repeat="x in info">
+			        	<div class="col-md-10 panel panel-default" style="margin-bottom: 15px;" >
+			        	<b><a href="/user/{{ x.user_id }}">{{x.username}}</a></b>
+			        	<p  id="username1">{{x.tweets}}</p>       	
+			        	<div><a href="/pop_retweet" class="text-right"><p>{{x.create_at}}</p></a></div>
+			        	<div style="margin-bottom: 5px;">
+			        	<button style="float: right;" class="btn btn-primary ">reply</button>
+			        	<button style="float: left;" class="btn btn-primary " data-toggle="modal" data-target="#myModal" ng-click="get_tweet(x)" onclick="">retweet</button>
+			        	</div>       	
+			       		</div>
+			  </div>
+			
+		</div>
+		</div>
+		<!-- test  -->  
+      
+      <div >
+	       <% for(var i in posts) 
+	            {                     
+            %>
+            <!--<div class="col-md-2"></div>   -->
+            <!--<div class="col-md-10 bg-color-bluelight border-color-red" style="margin-top: 10px;"> -->
+        	<div class="col-md-10 panel panel-default" style="margin-bottom: 15px;" >
+        	<b><a href="/user/<%= posts[i].user_id %>"><%= posts[i].username %></a></b>
+        	<p  id="username1"><%= posts[i].tweets %></p>
+
+        	<input type="text" name="username" id="username<%= i %>"></input>
+        	
+        	<div><a href="/pop_retweet" class="text-right"><p><%= posts[i].create_at %></p></a></div>
+        	
+        	<div style="margin-bottom: 5px;">
+        	<button style="float: right;" class="btn btn-primary ">reply</button>
+        	<button style="float: left;" class="btn btn-primary " data-toggle="modal" data-target="#myModal" onclick="">retweet</button>
+        	</div>       	
+        	
+       		</div>
+            <% 
+	            }  
+	        %>
+	   </div>	     
+      </div>
+    </div>
+    
+    <!-- pop_retweet Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   	<div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+            <h4 class="modal-title" id="myModalLabel">Retweet</h4>
+         </div>
+         
+         <div class="jumbotron">
+	      <div class="container">
+	        <!--  <div class="col-md-6"></div>  -->
+	        <!-- <div class="col-md-6">  -->
+	        <p style="color: red;"> <%=  locals.message %> </p>
+	          <form action="/retweet" method = "post">
+	            <textarea rows="5" style="float: center; margin-bottom: 0px;" name="tweet_content" class="form-control"></textarea>
+	            <div class="modal-body" panel panel-default><p>{{tweet_info}}</p></div>
+		        <div class="modal-footer">
+		            <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+		            <button type="button" class="btn btn-primary">submit</button>
+		         </div>
+	          </form>
+	        <!-- </div> -->
+	      </div>         
+         
+      </div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+	</div>
+
+    <div class="container">
+      <hr>
+      <footer>
+        <p>Twitter Lab1 2016</p>
+      </footer>
+    </div>
+  </body>
+</html>

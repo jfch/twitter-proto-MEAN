@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Twitter Lab1</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+  
+      <div  backgroud = "red">
+      <div class="container">
+        <div class="navbar-header"><a href="#" class="navbar-brand">Twitter Lab1</a></div>
+        <div class="navbar-collapse collapse">  
+        <form action="/logout" method = "get">               
+           <button type="submit" style="margin-left: 5px; float: right; margin-top: 10px;" class="btn btn-success navbar-right"">Logout</button>      
+        </form>
+        </div>
+      </div>
+    </div>
+
+	
+    <div class="jumbotron">
+      <div class="container">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+        <p style="color: red;"> <%=  locals.message %> </p>
+        <h3><%= user_open.username %></h3> 
+            <% if(user_open.id != user.id) {         %>
+            	<% if(follow) {         %> 	 	              
+	            	<a href="/unfollow/<%= user_open.id %>" class="btn btn-danger">Unfollow</a>
+	        	<% }  else{ %> 
+	         		<a href="/follow/<%= user_open.id %>" class="btn btn-success">Follow</a> 
+	        	<% } 
+	        	} 
+	        %>              
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="col-md-6"></div>
+      <div class="col-md-6">      
+      <div>All tweets</div>
+      <div>
+	       <% for(var i in posts) 
+	            {                     
+            %>
+        	<div class="col-md-2"></div>
+        	<div class="col-md-10">
+        	<b><a href="/user/<%= user_open.id %>"><%= user_open.username %></a></b>
+        	<p><%= posts[i].tweets %></p>
+       </div>
+            <% 
+	            }  
+	        %>
+	   </div>
+	
+      
+      </div>
+    </div>
+    <div class="container">
+      <hr>
+      <footer>
+        <p>Twitter Lab1 2016</p>
+      </footer>
+    </div>
+  </body>
+</html>
